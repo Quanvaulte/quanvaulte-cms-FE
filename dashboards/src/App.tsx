@@ -1,7 +1,8 @@
 import React from "react";
+import SignUpPage from "./Pages/SignUpPage";
 
 function App() {
-  return <div>Dashboards</div>;
+  return <SignUpPage/>;
 }
 
 export default App;
