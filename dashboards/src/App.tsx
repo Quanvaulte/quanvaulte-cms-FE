@@ -1,12 +1,8 @@
 import React from "react";
-import RegLogCourasel from "./Components/GeneralComponents/RegLogCourasel";
+import SignUpPage from "./Pages/SignUpPage";
 
 function App() {
-  return (
-    <div>
-      <RegLogCourasel />
-    </div>
-  );
+  return <SignUpPage />;
 }
 
 export default App;
