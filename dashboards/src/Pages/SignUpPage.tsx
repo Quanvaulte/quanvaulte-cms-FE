@@ -1,19 +1,23 @@
 import React, { useState } from "react"
+import { FcGoogle } from "react-icons/fc"
 import Carousel from "../Components/GeneralComponents/Carousel"
 import InputField from "../Components/GeneralComponents/InputField"
 import QuanVaulte from "../Media/GeneralMedia/QuanVaulte.png"
 import Button from "../Components/GeneralComponents/Button"
-import { FcGoogle } from "react-icons/fc"
+import DropdownInput from "../Components/GeneralComponents/DropdownInput"
+
 
 interface FormData {
   name: string
   email: string
+  accountType: string
   password: string
 }
 
 interface FormErrors {
   name?: string
   email?: string
+  accountType?: string
   password?: string
   confirm_password?: string
 }
@@ -22,6 +26,7 @@ const SignUpPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
+    accountType: "",
     password: "",  
   })
 
@@ -42,6 +47,10 @@ const SignUpPage: React.FC = () => {
       newErrors.email = "Please enter a valid email address."
     }
 
+    if (!formData.accountType) {
+      newErrors.accountType = "Please select an account type."
+    }
+
     if (!passwordRegex.test(formData.password)) {
       newErrors.password =
         "Password must have 8 characters, one uppercase, one number, and one special character."
@@ -56,7 +65,7 @@ const SignUpPage: React.FC = () => {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement >) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
     setErrors((prev) => ({ ...prev, [name]: "" })) 
@@ -80,7 +89,7 @@ const SignUpPage: React.FC = () => {
     e.preventDefault()
     if (validateForm()) {
       console.log("Form submitted:", formData)
-      setFormData({ name: "", email: "", password: "" })
+      setFormData({ name: "", email: "", accountType:"", password: "" })
       setConfirmPassword("")
       setErrors({})
     }
@@ -94,7 +103,7 @@ const SignUpPage: React.FC = () => {
       <div className="flex w-full md:w-1/2 bg-white justify-center items-center px-20">
         <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
             
-          <div className="flex flex-col w-full items-center max-w-md">
+          <div className="flex flex-col w-full mt-10 mb-10 items-center max-w-md">
             <img src={QuanVaulte} alt="QuanVaulte logo" className="my-4" />
             <h2 className="text-3xl font-bold text-gray-800 text-center">
               Create an E-Learn account
@@ -121,6 +130,15 @@ const SignUpPage: React.FC = () => {
             onChange={handleChange}
             error={errors.email}
           />
+
+          <DropdownInput
+            name="accountType"
+            value={formData.accountType}
+            onChange={handleChange}
+            options={["Create account as a learner", "Create account for your children", "Create account as a school"]}
+            error={errors.accountType}
+          />
+
 
           <InputField
             type="password"
