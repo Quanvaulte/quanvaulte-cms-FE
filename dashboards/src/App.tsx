@@ -1,7 +1,12 @@
 import React from "react";
+import RegLogCourasel from "./Components/GeneralComponents/RegLogCourasel";
 
 function App() {
-  return <div>Dashboards</div>;
+  return (
+    <div>
+      <RegLogCourasel />
+    </div>
+  );
 }
 
 export default App;
