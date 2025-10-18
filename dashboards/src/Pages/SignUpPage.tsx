@@ -98,7 +98,7 @@ const SignUpPage: React.FC = () => {
   return (
     <div className="flex flex-col md:flex-row min-h-screen w-full">
 
-      <Carousel />
+      <Carousel/>
 
       <div className="flex w-full md:w-1/2 bg-white justify-center items-center px-20">
         <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
@@ -173,7 +173,7 @@ const SignUpPage: React.FC = () => {
           />
 
           <Button
-            label="Sign Up"
+            label="Create account"
             type="submit"
             variant="primary"
             className="mt-15 mb-0"
