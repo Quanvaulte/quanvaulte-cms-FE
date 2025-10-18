@@ -1,13 +1,13 @@
 import React, { useState } from "react"
-import Carousel from "../Components/Carousel"
-import InputField from "../Components/InputField"
+import Carousel from "../Components/GeneralComponents/Carousel"
+import InputField from "../Components/GeneralComponents/InputField"
 import QuanVaulte from "../Media/GeneralMedia/QuanVaulte.png"
+import Button from "../Components/GeneralComponents/Button"
 
 interface FormData {
   name: string
   email: string
   password: string
-  confirm_password: string
 }
 
 interface FormErrors {
@@ -21,11 +21,14 @@ const SignUpPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
-    password: "",
-    confirm_password: "",
+    password: "",  
   })
 
+  const [confirmPassword, setConfirmPassword] = useState("")
   const [errors, setErrors] = useState<FormErrors>({})
+
+  const passwordRegex =
+    /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
 
   const validateForm = () => {
     const newErrors: FormErrors = {}
@@ -38,13 +41,15 @@ const SignUpPage: React.FC = () => {
       newErrors.email = "Please enter a valid email address."
     }
 
-    if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters."
+    if (!passwordRegex.test(formData.password)) {
+      newErrors.password =
+        "Password must have 8 characters, one uppercase, one number, and one special character."
     }
 
-    if (formData.confirm_password !== formData.password) {
+    if (confirmPassword !== formData.password) {
       newErrors.confirm_password = "Passwords do not match."
     }
+
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -56,16 +61,26 @@ const SignUpPage: React.FC = () => {
     setErrors((prev) => ({ ...prev, [name]: "" })) 
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleConfirmChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setConfirmPassword(value)
+
+    if (value && value !== formData.password) {
+      setErrors((prev) => ({
+        ...prev,
+        confirm_password: "Passwords do not match.",
+      }))
+    } else {
+      setErrors((prev) => ({ ...prev, confirm_password: "" }))
+    }
+  }
+
+ const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (validateForm()) {
       console.log("Form submitted:", formData)
-      setFormData({
-        name: "",
-        email: "",
-        password: "",
-        confirm_password: "",
-      })
+      setFormData({ name: "", email: "", password: "" })
+      setConfirmPassword("")
       setErrors({})
     }
   }
@@ -117,17 +132,17 @@ const SignUpPage: React.FC = () => {
             type="password"
             name="confirm_password"
             placeholder="Confirm password"
-            value={formData.confirm_password}
-            onChange={handleChange}
+            value={confirmPassword}
+            onChange={handleConfirmChange}
             error={errors.confirm_password}
           />
 
-          <button
+          <Button
+            label="Sign Up"
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-all"
-          >
-            Sign Up
-          </button>
+            variant="primary"
+            className="mt-14 mb-0"
+          />
 
           <p className="text-center text-gray-500 text-sm">
             Already have an account?{" "}

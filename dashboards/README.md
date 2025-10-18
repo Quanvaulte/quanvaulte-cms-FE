@@ -71,3 +71,4 @@ export default defineConfig([
   },
 ])
 ```
+ npm install lucide-react

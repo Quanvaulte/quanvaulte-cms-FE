@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react"
-import carousel_1 from "../Media/GeneralMedia/carousel_1.png"
-import carousel_2 from "../Media/GeneralMedia/carousel_2.png"
+import carousel_1 from "../../Media/GeneralMedia/carousel_1.png"
+import carousel_2 from "../../Media/GeneralMedia/carousel_2.png"
 import type { JSX } from "react/jsx-runtime"
+
+
 
 
 interface Slide {
