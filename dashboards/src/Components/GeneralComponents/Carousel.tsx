@@ -47,7 +47,7 @@ const Carousel: React.FC = () => {
   }, [slides.length])
 
   return (
-    <div className="hidden md:flex w-1/2 h-screen relative overflow-hidden">
+    <div className="hidden md:flex w-1/2  min-h-screen relative overflow-hidden">
       {slides.map((slide, index) => (
         <div
           key={index}

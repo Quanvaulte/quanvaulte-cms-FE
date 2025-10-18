@@ -3,6 +3,7 @@ import Carousel from "../Components/GeneralComponents/Carousel"
 import InputField from "../Components/GeneralComponents/InputField"
 import QuanVaulte from "../Media/GeneralMedia/QuanVaulte.png"
 import Button from "../Components/GeneralComponents/Button"
+import { FcGoogle } from "react-icons/fc"
 
 interface FormData {
   name: string
@@ -28,7 +29,7 @@ const SignUpPage: React.FC = () => {
   const [errors, setErrors] = useState<FormErrors>({})
 
   const passwordRegex =
-    /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+    /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#&<>])[A-Za-z\d@$!%*?&#&<>]{8,}$/
 
   const validateForm = () => {
     const newErrors: FormErrors = {}
@@ -86,9 +87,11 @@ const SignUpPage: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-screen w-full">
+    <div className="flex flex-col md:flex-row min-h-screen w-full">
+
       <Carousel />
-      <div className="flex w-full md:w-1/2 bg-white justify-center items-center px-4">
+
+      <div className="flex w-full md:w-1/2 bg-white justify-center items-center px-20">
         <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
             
           <div className="flex flex-col w-full items-center max-w-md">
@@ -137,11 +140,25 @@ const SignUpPage: React.FC = () => {
             error={errors.confirm_password}
           />
 
+          <div className="flex items-center mt-9 mb-1.5">
+            <hr className="flex-grow border-t border-dashed border-gray-300" />
+                <span className="mx-2 text-gray-500 text-base">or</span>
+            <hr className="flex-grow border-t border-dashed border-gray-300" />
+          </div>
+
+          <Button
+            label="Sign up with Google"
+            variant="google"
+            icon={<FcGoogle />}
+            className="w-full"
+            onClick={() => console.log("Sign up with Google")}
+          />
+
           <Button
             label="Sign Up"
             type="submit"
             variant="primary"
-            className="mt-14 mb-0"
+            className="mt-15 mb-0"
           />
 
           <p className="text-center text-gray-500 text-sm">
