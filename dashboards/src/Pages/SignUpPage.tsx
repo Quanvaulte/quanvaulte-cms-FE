@@ -33,6 +33,7 @@ const SignUpPage: React.FC = () => {
 
   const [confirmPassword, setConfirmPassword] = useState("")
   const [errors, setErrors] = useState<FormErrors>({})
+  
 
   const passwordRegex =
     /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#&<>])[A-Za-z\d@$!%*?&#&<>]{8,}$/
@@ -54,7 +55,7 @@ const SignUpPage: React.FC = () => {
 
     if (!passwordRegex.test(formData.password)) {
       newErrors.password =
-        "Password must have 8 characters, one uppercase, one number, and one special character."
+        "Password must have at least: 8 characters, 1 UPPERCASE, 1 number, and a special character (%@#$)."
     }
 
     if (confirmPassword !== formData.password) {
@@ -101,12 +102,12 @@ const SignUpPage: React.FC = () => {
 
       <Carousel/>
 
-      <div className="flex w-full md:w-1/2 bg-white justify-center items-center px-20">
+      <div className="flex w-full md:w-1/2 bg-white justify-center items-center px-6 lg:px-20 md:px-16 sm:px-6">
         <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
             
           <div className="flex flex-col w-full mt-10 mb-10 items-center max-w-md">
             <img src={QuanVaulte} alt="QuanVaulte logo" className="my-4" />
-            <h2 className="text-3xl font-bold text-gray-800 text-center">
+            <h2 className="lg:text-3xl md:text-3xl sm:text-2xl text-xl font-bold text-gray-800 text-center">
               Create an E-Learn account
             </h2>
             <p className="text-gray-600 text-center">

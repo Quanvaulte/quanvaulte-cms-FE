@@ -24,6 +24,30 @@ function LogInPage() {
 
   const [errors, setErrors] = useState<FormErrors>({});
 
+    const passwordRegex =
+    /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#&<>])[A-Za-z\d@$!%*?&#&<>]{8,}$/
+
+
+  
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
+
+    if (!loginData.email) {
+      newErrors.email = "Email is required";
+    } else if (!loginData.email.includes("@")) {
+      newErrors.email = "Please enter a valid email address."
+    }
+
+    if (!loginData.password) {
+      newErrors.password = "Password is required";
+    } else if (!passwordRegex.test(loginData.password)) {
+      newErrors.password =
+        "Password must have at least: 8 characters, 1 UPPERCASE, 1 number, and a special character (%@#$)."
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -31,10 +55,15 @@ function LogInPage() {
     setErrors((prev) => ({ ...prev, [name]: "" })); 
   };
 
+
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateForm()) return;
+
     console.log("Form submitted:", loginData);
+
     setLoginData({ email: "", password: "" });
     setErrors({});
   };
@@ -49,31 +78,35 @@ function LogInPage() {
           <section className="flex flex-col w-full mt-10 mb-10 items-center max-w-md">
            
             <img src={QuanVaulte} alt="QuanVaulte logo" className="my-4" />
-            <h2 className="text-2xl font-bold text-gray-800 text-center sm:text-xl">
+            <h2 className="lg:text-3xl md:text-3xl sm:text-2xl text-xl font-bold text-gray-800 text-center">
               Login to your Quantive account
             </h2>
             <p className="text-gray-600 text-center mb-6 sm:text-sm">
               Join thousands of students learning future tech skills.
             </p>
           
-          <InputField
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={loginData.email}
-            onChange={handleChange}
-          />
+          
+            <InputField
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={loginData.email}
+              onChange={handleChange}
+              error={errors.email}
+            />
+            
 
-          <InputField
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={loginData.password}
-            onChange={handleChange}
-          />
-          <p className="self-end text-[#2C43EB] text-center sm:text-sm"><Link to="" className='text-l font-medium hover:underline'>Forgotten password?</Link> </p>
-         
-
+          
+            <InputField
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={loginData.password}
+              onChange={handleChange}
+              error={errors.password}
+            />
+            
+          <p className="self-end text-[#2C43EB] text-center sm:text-sm"><Link to="/passwordreset" className='text-l font-medium hover:underline'>Forgotten password?</Link> </p>
           </section>
 
           <section>

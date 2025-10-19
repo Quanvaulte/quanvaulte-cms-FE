@@ -27,12 +27,25 @@ function PasswordReset() {
     setErrors((prev) => ({ ...prev, [name]: "" })); 
   };
 
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
+    
+    if (!passwordReset.email.includes("@")) {
+      newErrors.email = "Please enter a valid email address."
+    }
+
+
+     setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", passwordReset);
-    setPasswordReset({ email: ""});
-    setErrors({});
+    if (validateForm()) {
+      console.log("Form submitted:", passwordReset);
+      setPasswordReset({ email: ""});
+      setErrors({});
+    }
   };
 
   return (
@@ -58,6 +71,7 @@ function PasswordReset() {
             placeholder="Email address"
             value={passwordReset.email}
             onChange={handleChange}
+            error={errors.email}
           />
 
           </section>
