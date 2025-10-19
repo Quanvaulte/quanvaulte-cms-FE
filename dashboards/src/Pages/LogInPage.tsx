@@ -106,7 +106,7 @@ function LogInPage() {
               error={errors.password}
             />
             
-          <p className="self-end text-[#2C43EB] text-center sm:text-sm"><Link to="/passwordreset" className='text-l font-medium hover:underline'>Forgotten password?</Link> </p>
+          <p className="self-end text-[#2C43EB] text-center sm:text-sm"><Link to="/forgotpassword" className='text-l font-medium hover:underline'>Forgotten password?</Link> </p>
           </section>
 
           <section>

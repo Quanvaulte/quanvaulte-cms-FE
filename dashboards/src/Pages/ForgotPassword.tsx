@@ -5,7 +5,7 @@ import InputField from "../Components/GeneralComponents/InputField";
 import QuanVaulte from "../Media/GeneralMedia/QuanVaulte.png";
 import Button from "../Components/GeneralComponents/Button";
 
-interface passwordReset {
+interface forgotPassword {
   email: string;
 }
 
@@ -13,8 +13,8 @@ interface FormErrors {
   email?: string;
 }
 
-function PasswordReset() {
-  const [passwordReset, setPasswordReset] = useState<passwordReset>({
+function ForgotPassword() {
+  const [forgotPassword, setForgotPassword] = useState<forgotPassword>({
     email: ""
   });
 
@@ -23,14 +23,14 @@ function PasswordReset() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setPasswordReset((prev) => ({ ...prev, [name]: value }));
+    setForgotPassword((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" })); 
   };
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
     
-    if (!passwordReset.email.includes("@")) {
+    if (!forgotPassword.email.includes("@")) {
       newErrors.email = "Please enter a valid email address."
     }
 
@@ -42,8 +42,8 @@ function PasswordReset() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Form submitted:", passwordReset);
-      setPasswordReset({ email: ""});
+      console.log("Form submitted:", forgotPassword);
+      setForgotPassword({ email: ""});
       setErrors({});
     }
   };
@@ -69,7 +69,7 @@ function PasswordReset() {
             type="email"
             name="email"
             placeholder="Email address"
-            value={passwordReset.email}
+            value={forgotPassword.email}
             onChange={handleChange}
             error={errors.email}
           />
@@ -99,4 +99,4 @@ function PasswordReset() {
   );
 }
 
-export default PasswordReset;
+export default ForgotPassword;
