@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { Link } from 'react-router-dom';
 import { FcGoogle } from "react-icons/fc"
 import Carousel from "../Components/GeneralComponents/Carousel"
 import InputField from "../Components/GeneralComponents/InputField"
@@ -181,9 +182,9 @@ const SignUpPage: React.FC = () => {
 
           <p className="text-center text-gray-500 text-sm">
             Already have an account?{" "}
-            <span className="text-blue-600 hover:underline cursor-pointer">
+            <Link to="/login" className="text-blue-600 hover:underline cursor-pointer">
               Log in
-            </span>
+            </Link>
           </p>
         </form>
       </div>
