@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from "react"
-import carousel_1 from "../../Media/GeneralMedia/carousel_1.png"
-import carousel_2 from "../../Media/GeneralMedia/carousel_2.png"
-import type { JSX } from "react/jsx-runtime"
-
-
-
+import React, { useState, useEffect } from "react";
+import carousel_1 from "../../Media/GeneralMedia/carousel_1.png";
+import carousel_2 from "../../Media/GeneralMedia/carousel_2.png";
+import type { JSX } from "react/jsx-runtime";
 
 interface Slide {
-  image: string
-  caption: JSX.Element
-  subText: string
+  image: string;
+  caption: JSX.Element;
+  subText: string;
 }
 
 const Carousel: React.FC = () => {
@@ -19,32 +16,37 @@ const Carousel: React.FC = () => {
       caption: (
         <>
           Experience tech{" "}
-          <span className="text-[#F9D342] font-semibold">with Practice</span>, not just Videos
+          <span className="text-[#F9D342] font-semibold">with Practice</span>,
+          not just Videos
         </>
       ),
-      subText: "Do more than watch—practice tech for real, Fun pratice sessions awaits you",
+      subText:
+        "Do more than watch—practice tech for real, Fun pratice sessions awaits you",
     },
     {
       image: carousel_2,
-       caption: (
+      caption: (
         <>
-          Upgrade your skills and unlock {" "}
-          <span className="text-[#F9D342] font-semibold">new opportunities</span>{" "}with QuanVault
+          Upgrade your skills and unlock{" "}
+          <span className="text-[#F9D342] font-semibold">
+            new opportunities
+          </span>{" "}
+          with QuanVault
         </>
       ),
       subText: "Join thousands of learners building their future today.",
     },
-  ]
+  ];
 
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % slides.length)
-    }, 9000)
+      setCurrentIndex((prev) => (prev + 1) % slides.length);
+    }, 9000);
 
-    return () => clearInterval(timer)
-  }, [slides.length])
+    return () => clearInterval(timer);
+  }, [slides.length]);
 
   return (
     <div className="hidden md:flex w-1/2  min-h-screen relative overflow-hidden">
@@ -71,7 +73,7 @@ const Carousel: React.FC = () => {
         </div>
       ))}
 
-        <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-2">
+      <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {slides.map((_, i) => (
           <button
             key={i}
@@ -82,11 +84,8 @@ const Carousel: React.FC = () => {
           />
         ))}
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default Carousel
-
-
+export default Carousel;

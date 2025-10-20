@@ -1,28 +1,31 @@
-import React, { useState } from "react"
-import { Eye, EyeOff } from "lucide-react"
+import React, { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 interface InputFieldProps {
-  type: string
-  placeholder?: string
-  name: string
-  value: string
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  className?: string
-  error?: string
+  type: string;
+  placeholder?: string;
+  name?: string; // 👈 made optional
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  className?: string;
+  error?: string;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
   type,
   placeholder,
-  name,
+  name = "", // 👈 default to empty string
   value,
   onChange,
   error,
   className = "",
 }) => {
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
 
-  const isPasswordField = name.toLowerCase() === "password"
+  // 👇 safely check for password field
+  const isPasswordField =
+    name?.toLowerCase() === "password" ||
+    placeholder?.toLowerCase()?.includes("password");
 
   return (
     <div className="w-full relative mb-4">
@@ -32,14 +35,13 @@ const InputField: React.FC<InputFieldProps> = ({
         name={name}
         value={value}
         onChange={onChange}
-        className={`w-full border border-gray-300 rounded-lg px-4 py-2 
-          focus:outline-none focus:ring-2 focus:ring-blue-500 
-          transition-all duration-300 pr-10 ${className}
+        className={`w-full border rounded-lg px-4 py-2 pr-10
+          focus:outline-none focus:ring-2 transition-all duration-300
           ${
             error
               ? "border-red-500 focus:ring-red-400"
               : "border-gray-300 focus:ring-blue-500"
-          }`}
+          } ${className}`}
       />
 
       {isPasswordField && (
@@ -54,8 +56,7 @@ const InputField: React.FC<InputFieldProps> = ({
 
       {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
-  )
-}
+  );
+};
 
-export default InputField
-
+export default InputField;
