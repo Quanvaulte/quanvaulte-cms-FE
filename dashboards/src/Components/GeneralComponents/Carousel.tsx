@@ -44,7 +44,6 @@ const Carousel: React.FC = () => {
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % slides.length);
     }, 9000);
-
     return () => clearInterval(timer);
   }, [slides.length]);
 
@@ -73,13 +72,13 @@ const Carousel: React.FC = () => {
         </div>
       ))}
 
-      <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-2">
+      <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => setCurrentIndex(i)}
-            className={`w-3 h-3 rounded-full ${
-              i === currentIndex ? "bg-white" : "bg-white/50"
+            className={`transition-all duration-300 rounded-full ${
+              i === currentIndex ? "w-6 h-2 bg-white" : "w-2 h-2 bg-white/50"
             }`}
           />
         ))}

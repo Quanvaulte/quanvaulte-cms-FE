@@ -22,7 +22,7 @@ const Button: React.FC<ButtonProps> = ({
   icon,
 }) => {
   const baseStyles =
-    "flex items-center justify-center gap-2 px-6 py-2 rounded-xl font-semibold text-base transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 disabled:opacity-60 cursor-pointer";
+    "flex items-center justify-center gap-2 px-3 md:px-6 py-1.5 md:py-2 text-sm sm:text-base md:text-lg  rounded-xl font-semibold text-base transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 disabled:opacity-60 cursor-pointer";
 
   const variants: Record<ButtonVariant, string> = {
     primary:
