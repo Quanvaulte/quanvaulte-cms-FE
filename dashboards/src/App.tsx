@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import SignUpPage from "./Pages/RegisterationAndLogin/SignUpPage";
 import VerifyEmail from "./Pages/RegisterationAndLogin/VerifyEmail";
 import { BrowserRouter, Route, Routes } from "react-router-dom";

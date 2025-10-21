@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import Carousel from "../../Components/GeneralComponents/Carousel";
 import InputField from "../../Components/GeneralComponents/InputField";
@@ -7,8 +7,12 @@ import QuanVaulte from "../../Media/GeneralMedia/QuanVaulte.png";
 import Button from "../../Components/GeneralComponents/Button";
 import { FcGoogle } from "react-icons/fc";
 
+interface ApiErrorResponse {
+  msg?: string;
+  message?: string;
+}
+
 const SignUpPage: React.FC = () => {
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -19,7 +23,7 @@ const SignUpPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name || !email || !password || !confirmPassword) {
+    if (!email || !password || !confirmPassword) {
       setMessage("Please fill in all fields.");
       return;
     }
@@ -29,45 +33,51 @@ const SignUpPage: React.FC = () => {
       return;
     }
 
+    const payload = {
+      email: email,
+      password: password,
+      is_admin: false,
+    };
+
+    console.log("payload:", payload);
+
     try {
       setLoading(true);
-      setMessage("Creating your account...");
+      setMessage("Creating your QuanVaulte account...");
 
-      // this sends name,email and password to the backend
-      const res = await axios.post("http://localhost:5000/auth/register", {
-        name,
-        email,
-        password,
-      });
-      console.log(res);
+      const response = await axios.post(
+        "https://quanvaulte-be.onrender.com/auth/register",
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "*/*",
+          },
+        }
+      );
 
-      // Check for success
-      if (res.status === 201) {
-        setMessage("Account created! Sending verification email...");
+      console.log("response", response);
 
-        // Trigger email verification endpoint
-        await axios.post("http://localhost:5000/auth/send-verification", {
-          email,
-        });
-
-        // ✅ Navigate to verify email page with email in state
-        navigate("/verify-email", { state: { email } });
-
-        // 🧹 Clear input fields after registeration
-        setName("");
+      if (response.status === 201) {
+        setMessage("Account created successfully!");
+        setTimeout(() => navigate("/login"), 1500);
         setEmail("");
         setPassword("");
         setConfirmPassword("");
       } else {
-        setMessage(res.data.message || "Registration failed. Try again.");
+        setMessage(response.data?.msg || "Registration failed. Try again.");
       }
-    } catch (err: any) {
+    } catch (error) {
+      const err = error as AxiosError<ApiErrorResponse>;
       console.error("Signup error:", err);
-      setMessage(
+
+      const errorMsg =
+        err.response?.data?.msg ||
         err.response?.data?.message ||
-          err.message ||
-          "Something went wrong. Please try again."
-      );
+        err.message ||
+        "Something went wrong. Please try again.";
+
+      setMessage(errorMsg);
     } finally {
       setLoading(false);
     }
@@ -82,32 +92,23 @@ const SignUpPage: React.FC = () => {
           <div className="flex flex-col items-center">
             <img src={QuanVaulte} alt="QuanVaulte logo" className="my-4 w-32" />
             <h2 className="text-2xl font-bold text-gray-800">
-              Create an E-Learn account
+              Create your QuanVaulte account
             </h2>
             <p className="text-gray-600 text-sm text-center">
-              Join thousands of students learning tech skills.
+              Get started with secure learning and vault access.
             </p>
           </div>
 
           {message && (
             <p
               className={`text-center text-sm ${
-                message.toLowerCase().includes("verify")
+                message.includes("successfully")
                   ? "text-green-600"
                   : "text-red-500"
-              }`}
-            >
+              }`}>
               {message}
             </p>
           )}
-
-          <InputField
-            type="text"
-            placeholder="Name"
-            name="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
 
           <InputField
             type="email"
@@ -142,9 +143,9 @@ const SignUpPage: React.FC = () => {
           />
 
           <div className="flex items-center mt-6">
-            <hr className="flex-grow border-t border-dashed border-gray-300" />
+            <hr className="grow border-t border-dashed border-gray-300" />
             <span className="mx-2 text-gray-500 text-sm">or</span>
-            <hr className="flex-grow border-t border-dashed border-gray-300" />
+            <hr className="grow border-t border-dashed border-gray-300" />
           </div>
 
           <Button
