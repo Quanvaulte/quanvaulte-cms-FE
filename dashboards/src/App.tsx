@@ -1,24 +1,17 @@
-import React from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import SignUpPage from './Pages/SignUpPage'
-import VerifyEmail from './Pages/VerifyEmail'
-import LogInPage from './Pages/LogInPage'
-import ForgotPassword from './Pages/ForgotPassword'
-import PasswordResetPage from './Pages/PasswordResetPage'
-
+import React from "react";
+import SignUpPage from "./Pages/RegisterationAndLogin/SignUpPage";
+import VerifyEmail from "./Pages/RegisterationAndLogin/VerifyEmail";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        <Route path="/" element={<SignUpPage />} />
-        <Route path="/verifyemail" element={<VerifyEmail/>} />
-        <Route path="/login" element={<LogInPage/>} />
-        <Route path="/forgotpassword" element={<ForgotPassword/>} />
-        <Route path="/resetpassword" element={<PasswordResetPage/>} />
+        <Route path="/register" element={<SignUpPage />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
       </Routes>
-    </Router>
-  )
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
