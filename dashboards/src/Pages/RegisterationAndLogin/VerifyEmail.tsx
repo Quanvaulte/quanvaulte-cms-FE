@@ -1,30 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Carousel from "../Components/GeneralComponents/Carousel";
-import QuanVaulte from "../Media/GeneralMedia/QuanVaulte.png";
-import OTPInput from "../Components/GeneralComponents/OTPInput";
-import Button from "../Components/GeneralComponents/Button";
+import Carousel from "../../Components/GeneralComponents/Carousel";
+import QuanVaulte from "../../Media/GeneralMedia/QuanVaulte.png";
+import OTPInput from "../../Components/GeneralComponents/OTPInput";
+import Button from "../../Components/GeneralComponents/Button";
 
 const VerifyEmail: React.FC = () => {
   const [otp, setOtp] = useState(Array(4).fill(""));
   const [timer, setTimer] = useState(30);
   const [canResend, setCanResend] = useState(false);
 
- 
   const handleOtpChange = (newOtp: string[]) => {
     setOtp(newOtp);
   };
 
-  
-const handleSubmit = (e: React.FormEvent) => {
-  e.preventDefault();
-  const enteredCode = otp.join("");
-  console.log("Entered OTP:", enteredCode);
-  setOtp(Array(4).fill(""));
-};
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const enteredCode = otp.join("");
+    console.log("Entered OTP:", enteredCode);
+    setOtp(Array(4).fill(""));
+  };
 
-
-  
   const handleResend = () => {
     if (!canResend) return;
     console.log("Resend link clicked"); // Sharzy you'll change this to an actual API call
@@ -33,7 +29,6 @@ const handleSubmit = (e: React.FormEvent) => {
     setCanResend(false);
   };
 
-  
   useEffect(() => {
     if (timer > 0) {
       const countdown = setInterval(() => setTimer((t) => t - 1), 1000);
@@ -45,7 +40,6 @@ const handleSubmit = (e: React.FormEvent) => {
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen w-full">
-    
       <Carousel />
 
       <div className="flex flex-col w-full md:w-1/2 bg-white justify-between items-center px-20">
@@ -108,4 +102,3 @@ const handleSubmit = (e: React.FormEvent) => {
 };
 
 export default VerifyEmail;
-

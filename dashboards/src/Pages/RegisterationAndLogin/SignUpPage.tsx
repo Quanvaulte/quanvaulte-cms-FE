@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import Carousel from "../../Components/GeneralComponents/Carousel";
 import InputField from "../../Components/GeneralComponents/InputField";
 import QuanVaulte from "../../Media/GeneralMedia/QuanVaulte.png";
@@ -13,11 +14,11 @@ const SignUpPage: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // 🧩 Basic validations
     if (!name || !email || !password || !confirmPassword) {
       setMessage("Please fill in all fields.");
       return;
@@ -32,37 +33,41 @@ const SignUpPage: React.FC = () => {
       setLoading(true);
       setMessage("Creating your account...");
 
-      const res = await axios.post(
-        "https://quanvaulte-be.onrender.com/auth/register",
-        { name, email, password }
-      );
+      // this sends name,email and password to the backend
+      const res = await axios.post("http://localhost:5000/auth/register", {
+        name,
+        email,
+        password,
+      });
+      console.log(res);
 
-      // 🧠 Expecting a token in response
-      const token = res.data?.token;
+      // Check for success
+      if (res.status === 201) {
+        setMessage("Account created! Sending verification email...");
 
-      if (!token) {
-        throw new Error("No token received from server.");
+        // Trigger email verification endpoint
+        await axios.post("http://localhost:5000/auth/send-verification", {
+          email,
+        });
+
+        // ✅ Navigate to verify email page with email in state
+        navigate("/verify-email", { state: { email } });
+
+        // 🧹 Clear input fields after registeration
+        setName("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+      } else {
+        setMessage(res.data.message || "Registration failed. Try again.");
       }
-
-      // ✅ Store token in localStorage
-      localStorage.setItem("authToken", token);
-      setMessage("Account created successfully! Token stored securely.");
-
-      // 🧹 Reset form
-      setName("");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-
-      // (Optional) Redirect to dashboard
-      // window.location.href = "/dashboard";
     } catch (err: any) {
       console.error("Signup error:", err);
-      const errorMsg =
+      setMessage(
         err.response?.data?.message ||
-        err.message ||
-        "Something went wrong. Please try again.";
-      setMessage(errorMsg);
+          err.message ||
+          "Something went wrong. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -87,7 +92,9 @@ const SignUpPage: React.FC = () => {
           {message && (
             <p
               className={`text-center text-sm ${
-                message.includes("success") ? "text-green-600" : "text-red-500"
+                message.toLowerCase().includes("verify")
+                  ? "text-green-600"
+                  : "text-red-500"
               }`}
             >
               {message}

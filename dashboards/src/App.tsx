@@ -1,8 +1,17 @@
 import React from "react";
 import SignUpPage from "./Pages/RegisterationAndLogin/SignUpPage";
+import VerifyEmail from "./Pages/RegisterationAndLogin/VerifyEmail";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
-  return <SignUpPage />;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/register" element={<SignUpPage />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
