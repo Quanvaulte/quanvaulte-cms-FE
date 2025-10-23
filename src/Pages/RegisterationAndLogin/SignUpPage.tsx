@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
+import api from "../../api/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import Carousel from "../../Components/GeneralComponents/Carousel";
 import InputField from "../../Components/GeneralComponents/InputField";
@@ -47,22 +48,16 @@ const SignUpPage: React.FC = () => {
       setLoading(true);
       setMessage("Creating your QuanVaulte account...");
 
-      const response = await axios.post(
-        "https://quanvaulte-be.onrender.com/auth/register",
-        payload,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "*/*",
-          },
-        }
-      );
+      const response = await api.post("/auth/register", payload);
 
       console.log("response", response);
 
       if (response.status === 201) {
         setMessage("Account created successfully!");
-        setTimeout(() => navigate("/verify-email"), 1500);
+        setTimeout(
+          () => navigate(`/verify-email/${response.data.userId}`),
+          1500
+        );
         setName("");
         setEmail("");
         setPassword("");
@@ -108,8 +103,7 @@ const SignUpPage: React.FC = () => {
                 message.includes("successfully")
                   ? "text-green-600"
                   : "text-red-500"
-              }`}
-            >
+              }`}>
               {message}
             </p>
           )}

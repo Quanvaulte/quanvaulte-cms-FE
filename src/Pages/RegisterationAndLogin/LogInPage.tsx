@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
+import api from "../../api/axiosInstance";
 import { FcGoogle } from "react-icons/fc";
 import Carousel from "../../Components/GeneralComponents/Carousel";
 import InputField from "../../Components/GeneralComponents/InputField";
@@ -76,21 +78,16 @@ function LogInPage() {
       setLoading(true);
       setMessage("Signing you in...");
 
-      const response = await axios.post<LoginResponse>(
-        "https://quanvaulte-be.onrender.com/auth/login",
-        payload,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        }
-      );
+      const response = await api.post<LoginResponse>("/auth/login", payload);
       console.log("response", response);
 
       if (response.status === 200 && response.data.token) {
         setMessage("Login successful!");
-        localStorage.setItem("token", response.data.token);
+        Cookies.set("auth_token", response.data.token, {
+          expires: 7,
+          secure: true,
+          sameSite: "Strict",
+        });
         setTimeout(() => navigate("/dashboard"), 1000);
       } else {
         setMessage("Login failed. Please try again.");
@@ -120,8 +117,7 @@ function LogInPage() {
       <div className="flex flex-col w-full md:w-1/2 bg-white justify-between items-center px-20">
         <form
           onSubmit={handleSubmit}
-          className="w-full max-w-md space-y-6 min-h-screen flex flex-col justify-between"
-        >
+          className="w-full max-w-md space-y-6 min-h-screen flex flex-col justify-between">
           <section className="flex flex-col w-full mt-10 mb-10 items-center max-w-md">
             <img src={QuanVaulte} alt="QuanVaulte logo" className="my-4" />
             <h2 className="lg:text-3xl md:text-3xl sm:text-2xl text-xl font-bold text-gray-800 text-center">
@@ -137,8 +133,7 @@ function LogInPage() {
                   message.includes("success")
                     ? "text-green-600"
                     : "text-red-500"
-                }`}
-              >
+                }`}>
                 {message}
               </p>
             )}
@@ -164,8 +159,7 @@ function LogInPage() {
             <p className="self-end text-[#2C43EB] text-center sm:text-sm">
               <Link
                 to="/forgotpassword"
-                className="text-l font-medium hover:underline"
-              >
+                className="text-l font-medium hover:underline">
                 Forgotten password?
               </Link>
             </p>
@@ -198,8 +192,7 @@ function LogInPage() {
               Don’t have an account?
               <Link
                 to="/register"
-                className="text-blue-600 mb-5 hover:underline cursor-pointer"
-              >
+                className="text-blue-600 mb-5 hover:underline cursor-pointer">
                 Sign up
               </Link>
             </p>

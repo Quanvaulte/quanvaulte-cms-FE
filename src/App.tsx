@@ -10,7 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LogInPage />} />
         <Route path="/register" element={<SignUpPage />} />
-        <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/verify-email/:userId" element={<VerifyEmail />} />
       </Routes>
     </BrowserRouter>
   );
