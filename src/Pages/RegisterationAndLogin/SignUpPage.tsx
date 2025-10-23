@@ -13,6 +13,7 @@ interface ApiErrorResponse {
 }
 
 const SignUpPage: React.FC = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -34,6 +35,7 @@ const SignUpPage: React.FC = () => {
     }
 
     const payload = {
+      name: name,
       email: email,
       password: password,
       is_admin: false,
@@ -60,7 +62,8 @@ const SignUpPage: React.FC = () => {
 
       if (response.status === 201) {
         setMessage("Account created successfully!");
-        setTimeout(() => navigate("/login"), 1500);
+        setTimeout(() => navigate("/verify-email"), 1500);
+        setName("");
         setEmail("");
         setPassword("");
         setConfirmPassword("");
@@ -105,11 +108,19 @@ const SignUpPage: React.FC = () => {
                 message.includes("successfully")
                   ? "text-green-600"
                   : "text-red-500"
-              }`}>
+              }`}
+            >
               {message}
             </p>
           )}
 
+          <InputField
+            type="name"
+            placeholder="Name"
+            name="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
           <InputField
             type="email"
             placeholder="Email"
