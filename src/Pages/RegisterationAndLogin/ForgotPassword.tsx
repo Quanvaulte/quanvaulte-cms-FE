@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import Carousel from "../../Components/GeneralComponents/Carousel";
 import InputField from "../../Components/GeneralComponents/InputField";
 import QuanVaulte from "../../Media/GeneralMedia/QuanVaulte.png";
 import Button from "../../Components/GeneralComponents/Button";
 
-interface forgotPassword {
+interface ForgotPasswordData {
   email: string;
 }
 
@@ -14,16 +15,22 @@ interface FormErrors {
 }
 
 function ForgotPassword() {
-  const [forgotPassword, setForgotPassword] = useState<forgotPassword>({
+  const [forgotPassword, setForgotPassword] = useState<ForgotPasswordData>({
     email: "",
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<string | null>(null); // ✅ to show API feedback
+  const [messageType, setMessageType] = useState<"success" | "error" | null>(
+    null
+  ); // for styling
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForgotPassword((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
+    setMessage(null); // clear previous message
   };
 
   const validateForm = (): boolean => {
@@ -37,12 +44,36 @@ function ForgotPassword() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateForm()) {
-      console.log("Form submitted:", forgotPassword);
+
+    if (!validateForm()) return;
+
+    setLoading(true);
+    setMessage(null);
+
+    try {
+      // request with Axios
+      const response = await axios.post(
+        "https://quanvaulte-be.onrender.com/api/v2/auth/forgot-password",
+        { email: forgotPassword.email }
+      );
+
+      console.log("📩 Forgot Password API Response:", response.data);
+
+      setMessage(response.data.message || "Password reset link sent!");
+      setMessageType("success");
       setForgotPassword({ email: "" });
-      setErrors({});
+    } catch (error: any) {
+      console.error("❌ Error calling forgot password endpoint:", error);
+
+      const errorMessage =
+        error.response?.data?.message ||
+        "Something went wrong. Please try again.";
+      setMessage(errorMessage);
+      setMessageType("error");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,14 +103,26 @@ function ForgotPassword() {
               onChange={handleChange}
               error={errors.email}
             />
+
+            {/* ✅ Display success or error message */}
+            {message && (
+              <p
+                className={`mt-4 text-sm text-center ${
+                  messageType === "success" ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                {message}
+              </p>
+            )}
           </section>
 
           <section>
             <Button
-              label="Continue"
+              label={loading ? "Sending..." : "Continue"}
               type="submit"
               variant="primary"
               className="mt-15 mb-0 w-full sm:text-sm"
+              disabled={loading}
             />
 
             <p className="text-center text-gray-500 text-sm">

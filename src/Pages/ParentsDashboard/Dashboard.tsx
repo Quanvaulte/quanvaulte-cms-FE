@@ -1,3 +1,7 @@
-export default function ProtectedRoute() {
-  return <div>Protected Route</div>
+import React from "react";
+
+function Dashboard() {
+  return <div>Dashboard is active</div>;
 }
+
+export default Dashboard;

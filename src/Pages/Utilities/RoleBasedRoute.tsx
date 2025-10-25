@@ -1,3 +1,9 @@
-export default function ProtectedRoute() {
-  return <div>Protected Route</div>
+import React from 'react'
+
+function RoleBasedRoute() {
+  return (
+    <div>RoleBasedRoute</div>
+  )
 }
+
+export default RoleBasedRoute

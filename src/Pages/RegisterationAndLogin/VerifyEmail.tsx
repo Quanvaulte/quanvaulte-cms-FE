@@ -15,61 +15,58 @@ const VerifyEmail: React.FC = () => {
   const [successMsg, setSuccessMsg] = useState("");
   const navigate = useNavigate();
 
-
   const { userId } = useParams<{ userId: string }>();
 
   const handleOtpChange = (newOtp: string[]) => setOtp(newOtp);
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  const token = otp.join("");
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const token = otp.join("");
 
-  if (token.length < 4) {
-    setErrorMsg("Please enter the full verification code.");
-    return;
-  }
-
-  if (!userId) {
-    setErrorMsg("Invalid verification link. Missing user ID.");
-    return;
-  }
-
-  setLoading(true);
-  setErrorMsg("");
-  setSuccessMsg("");
-  // console.log('user id', userId);
-  
-
-  try {
-    const response = await axios.post(
-      `https://quanvaulte-be.onrender.com/auth/confirm-email/${userId}`,
-      { token }
-    );
-
-    if (response.status === 200) {
-      setSuccessMsg("Email verified successfully! Redirecting to login...");
-      setTimeout(() => navigate("/"), 2000);
+    if (token.length < 4) {
+      setErrorMsg("Please enter the full verification code.");
+      return;
     }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    console.log("error", error);
-    if (error.response?.status === 400) {
-      setErrorMsg("Invalid or expired verification code.");
-    } else {
-      setErrorMsg("An error occurred while verifying your email.");
-    }
-  } finally {
-    setLoading(false);
-  }
-};
 
+    if (!userId) {
+      setErrorMsg("Invalid verification link. Missing user ID.");
+      return;
+    }
+
+    setLoading(true);
+    setErrorMsg("");
+    setSuccessMsg("");
+    // console.log('user id', userId);
+
+    try {
+      const response = await axios.post(
+        `https://quanvaulte-be.onrender.com/auth/confirm-email/${userId}`,
+        { token }
+      );
+
+      if (response.status === 200) {
+        setSuccessMsg("Email verified successfully! Redirecting to login...");
+        setTimeout(() => navigate("/"), 2000);
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.log("error", error);
+      if (error.response?.status === 400) {
+        setErrorMsg("Invalid or expired verification code.");
+      } else {
+        setErrorMsg("An error occurred while verifying your email.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleResend = async () => {
     if (!canResend) return;
     setCanResend(false);
     setTimer(30);
     setOtp(Array(4).fill(""));
-    console.log("Resend code clicked"); 
+    console.log("Resend code clicked");
   };
 
   useEffect(() => {
@@ -88,7 +85,8 @@ const handleSubmit = async (e: React.FormEvent) => {
       <div className="flex flex-col w-full md:w-1/2 bg-white justify-between items-center px-20">
         <form
           onSubmit={handleSubmit}
-          className="w-full max-w-md space-y-6 min-h-screen flex flex-col justify-between">
+          className="w-full max-w-md space-y-6 min-h-screen flex flex-col justify-between"
+        >
           <section className="flex flex-col w-full mt-10 mb-10 items-center max-w-md">
             <img src={QuanVaulte} alt="QuanVaulte logo" className="my-4" />
 
@@ -114,7 +112,8 @@ const handleSubmit = async (e: React.FormEvent) => {
                 <button
                   type="button"
                   onClick={handleResend}
-                  className="text-blue-600 hover:underline font-medium">
+                  className="text-blue-600 hover:underline font-medium"
+                >
                   Resend code
                 </button>
               ) : (
@@ -138,7 +137,8 @@ const handleSubmit = async (e: React.FormEvent) => {
               Already have an account?{" "}
               <Link
                 to="/login"
-                className="text-blue-600 hover:underline cursor-pointer">
+                className="text-blue-600 hover:underline cursor-pointer"
+              >
                 Log in
               </Link>
             </p>

@@ -103,7 +103,8 @@ const SignUpPage: React.FC = () => {
                 message.includes("successfully")
                   ? "text-green-600"
                   : "text-red-500"
-              }`}>
+              }`}
+            >
               {message}
             </p>
           )}
