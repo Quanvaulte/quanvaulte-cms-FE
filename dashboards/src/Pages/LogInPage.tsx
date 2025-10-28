@@ -6,6 +6,7 @@ import InputField from "../Components/GeneralComponents/InputField";
 import QuanVaulte from "../Media/GeneralMedia/QuanVaulte.png";
 import Button from "../Components/GeneralComponents/Button";
 
+
 interface LoginData {
   email: string;
   password: string;
@@ -76,7 +77,6 @@ function LogInPage() {
       <div className="flex flex-col w-full md:w-1/2 bg-white justify-between items-center px-20">
         <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6 min-h-screen flex flex-col justify-between">
           <section className="flex flex-col w-full mt-10 mb-10 items-center max-w-md">
-           
             <img src={QuanVaulte} alt="QuanVaulte logo" className="my-4" />
             <h2 className="lg:text-3xl md:text-3xl sm:text-2xl text-xl font-bold text-gray-800 text-center">
               Login to your Quantive account

@@ -5,7 +5,8 @@ import VerifyEmail from './Pages/VerifyEmail'
 import LogInPage from './Pages/LogInPage'
 import ForgotPassword from './Pages/ForgotPassword'
 import PasswordResetPage from './Pages/PasswordResetPage'
-
+import OnboardingSchool from './Pages/SchoolDashboard/OnboardingSchool'
+import OnboardingParent from './Pages/ParentsDashboard/OnboardingParent'
 
 function App() {
   return (
@@ -16,6 +17,8 @@ function App() {
         <Route path="/login" element={<LogInPage/>} />
         <Route path="/forgotpassword" element={<ForgotPassword/>} />
         <Route path="/resetpassword" element={<PasswordResetPage/>} />
+        <Route path="/onboardingschool" element={<OnboardingSchool/>} />
+        <Route path="/onboardingparent" element={<OnboardingParent/>} />
       </Routes>
     </Router>
   )
