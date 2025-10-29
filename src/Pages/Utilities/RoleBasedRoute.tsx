@@ -1,9 +1,5 @@
-import React from 'react'
-
 function RoleBasedRoute() {
-  return (
-    <div>RoleBasedRoute</div>
-  )
+  return <div>RoleBasedRoute</div>;
 }
 
-export default RoleBasedRoute
+export default RoleBasedRoute;
