@@ -63,6 +63,7 @@ function ForgotPassword() {
       setMessage(response.data.message || "Password reset link sent!");
       setMessageType("success");
       setForgotPassword({ email: "" });
+      // if and else statement to navigate to the verify email page
     } catch (err) {
       const error = err as AxiosError<{ message?: string }>;
 
@@ -86,7 +87,8 @@ function ForgotPassword() {
       <div className="flex flex-col w-full md:w-1/2 bg-white justify-between items-center px-20">
         <form
           onSubmit={handleSubmit}
-          className="w-full max-w-md space-y-6 min-h-screen flex flex-col justify-between">
+          className="w-full max-w-md space-y-6 min-h-screen flex flex-col justify-between"
+        >
           <section className="flex flex-col w-full mt-10 mb-10 items-center max-w-md">
             <img src={QuanVaulte} alt="QuanVaulte logo" className="my-4" />
             <h2 className="text-2xl font-bold text-gray-800 text-center sm:text-xl">
@@ -109,7 +111,8 @@ function ForgotPassword() {
               <p
                 className={`mt-4 text-sm text-center ${
                   messageType === "success" ? "text-green-600" : "text-red-600"
-                }`}>
+                }`}
+              >
                 {message}
               </p>
             )}
@@ -128,7 +131,8 @@ function ForgotPassword() {
               Remember your password?{" "}
               <Link
                 to="/login"
-                className="text-blue-600 mb-5 hover:underline cursor-pointer">
+                className="text-blue-600 mb-5 hover:underline cursor-pointer"
+              >
                 Login
               </Link>
             </p>

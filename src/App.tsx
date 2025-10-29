@@ -15,7 +15,8 @@ function App() {
         <Route path="/" element={<LogInPage />} />
         <Route path="/register" element={<SignUpPage />} />
         <Route path="/verify-email/:userId" element={<VerifyEmail />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        {/* <Route path="/reset-password" element={<ForgotPasswordPage />} /> not working, change to the page that gives new password and confirms it */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/onboardingparent" element={<OnboardingParent />} />
         <Route path="/onboardingschool" element={<OnboardingSchool />} />

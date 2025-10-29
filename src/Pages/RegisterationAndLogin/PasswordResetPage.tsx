@@ -79,7 +79,8 @@ const ForgotPasswordPage: React.FC = () => {
       <div className="flex flex-col w-full md:w-1/2 bg-white justify-between items-center px-20">
         <form
           onSubmit={handleSubmit}
-          className="w-full max-w-md space-y-6 min-h-screen flex flex-col justify-between">
+          className="w-full max-w-md space-y-6 min-h-screen flex flex-col justify-between"
+        >
           {/* HEADER */}
           <section className="flex flex-col w-full mt-10 mb-10 items-center max-w-md">
             <img src={QuanVaulte} alt="QuanVaulte logo" className="my-4" />
@@ -95,7 +96,8 @@ const ForgotPasswordPage: React.FC = () => {
               <p
                 className={`text-center text-sm ${
                   message.startsWith("✅") ? "text-green-600" : "text-red-500"
-                }`}>
+                }`}
+              >
                 {message}
               </p>
             )}
@@ -114,7 +116,6 @@ const ForgotPasswordPage: React.FC = () => {
             />
           </section>
 
-        
           <section className="flex flex-col items-center space-y-4 mb-6">
             <Button
               label={loading ? "Sending..." : "Send Reset Link"}
@@ -128,7 +129,8 @@ const ForgotPasswordPage: React.FC = () => {
               Remember your password?{" "}
               <Link
                 to="/login"
-                className="text-blue-600 hover:underline cursor-pointer">
+                className="text-blue-600 hover:underline cursor-pointer"
+              >
                 Log in
               </Link>
             </p>
