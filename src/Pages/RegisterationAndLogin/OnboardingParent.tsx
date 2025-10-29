@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import ImageSection from "../../Components/GeneralComponents/ImageSection";
 import ProgressBar from "../../Components/GeneralComponents/ProgressBar";
 import CustomRadioInput from "../../Components/GeneralComponents/CustomRadioInput";
@@ -8,16 +8,27 @@ const OnboardingParent: React.FC = () => {
   const [pageNum, setPageNum] = useState(1);
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
 
-
   const questions = [
     {
       id: 1,
       type: "radio",
       question: "Why are you joining QuanVaulte?",
       options: [
-        { label: "I’m a Student.",  subtext: "Learn tech skills, earn badges, and get certified.", value: "Student" },
-        { label: "I’m a School or Teacher", subtext: "Enroll students, assign courses, and track progress.", value: "School" },
-        { label: "I’m a Parent", subtext: "Track your child’s learning progress and achievements.", value: "Parent" },
+        {
+          label: "I’m a Student.",
+          subtext: "Learn tech skills, earn badges, and get certified.",
+          value: "Student",
+        },
+        {
+          label: "I’m a School or Teacher",
+          subtext: "Enroll students, assign courses, and track progress.",
+          value: "School",
+        },
+        {
+          label: "I’m a Parent",
+          subtext: "Track your child’s learning progress and achievements.",
+          value: "Parent",
+        },
       ],
       bubbleText: "Learning is fun Using QuanVault",
     },
@@ -41,7 +52,7 @@ const OnboardingParent: React.FC = () => {
       question: "How often do you want progress updates?",
       options: [
         { label: "Weekly summary", value: "Weekly summary" },
-        { label: "Monthly overview", value: "Monthly overview" },
+        { label: "Monthly overview", value: "Monthly overviews" },
         { label: "Only major milestones", value: "Only major milestones" },
       ],
       bubbleText: "No surprise how often I share your child’s progress",
@@ -49,7 +60,8 @@ const OnboardingParent: React.FC = () => {
     {
       id: 4,
       type: "radio",
-      question: "Would you like to set learning goals or rewards for your Students?",
+      question:
+        "Would you like to set learning goals or rewards for your Students?",
       options: [
         { label: "Yes", value: "Yes" },
         { label: "No", value: "No" },
@@ -66,7 +78,7 @@ const OnboardingParent: React.FC = () => {
       ],
       bubbleText: "Let’s help your child make new learning buddies",
     },
-  ]
+  ];
 
   const totalPages = questions.length;
   const currentQuestion = questions[pageNum - 1];
@@ -82,11 +94,8 @@ const OnboardingParent: React.FC = () => {
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
-      <ImageSection
-        bubbleText={currentQuestion.bubbleText}
-    />
+      <ImageSection bubbleText={currentQuestion.bubbleText} />
 
-      
       <div className="flex flex-col justify-between w-full md:w-1/2 bg-white p-8 md:p-16">
         <ProgressBar pageNum={pageNum} totalPages={totalPages} />
 
@@ -109,15 +118,13 @@ const OnboardingParent: React.FC = () => {
           )}
         </div>
 
-        
         <div className="flex justify-between mt-10">
-          
           <Button
-          label="Back"
-          variant="custom"
-          onClick={handlePrev}
-          disabled={pageNum === 1}
-          className={`px-6 py-2 rounded-lg font-semibold border ${
+            label="Back"
+            variant="custom"
+            onClick={handlePrev}
+            disabled={pageNum === 1}
+            className={`px-6 py-2 rounded-lg font-semibold border ${
               pageNum === 1
                 ? "border-gray-300 text-gray-400 "
                 : "border-blue-500 text-blue-600 hover:bg-blue-50 cursor-pointer"
@@ -125,10 +132,10 @@ const OnboardingParent: React.FC = () => {
           />
 
           <Button
-          label={pageNum === totalPages ? "Finish" : "Next"}
-          variant="custom"
-          className="px-6 py-2 rounded-lg font-semibold bg-[#2C43EB] text-white hover:bg-blue-600 cursor-pointer "
-          onClick={handleNext}
+            label={pageNum === totalPages ? "Finish" : "Next"}
+            variant="custom"
+            className="px-6 py-2 rounded-lg font-semibold bg-[#2C43EB] text-white hover:bg-blue-600 cursor-pointer "
+            onClick={handleNext}
           />
         </div>
       </div>
