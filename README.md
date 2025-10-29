@@ -71,3 +71,6 @@ export default defineConfig([
   },
 ])
 ```
+ npm install lucide-react
+ npm install react-swipeable
+
