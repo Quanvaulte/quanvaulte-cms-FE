@@ -1,74 +1,74 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import Carousel from "../../Components/GeneralComponents/Carousel";
 import InputField from "../../Components/GeneralComponents/InputField";
-import Button from "../../Components/GeneralComponents/Button";
 import QuanVaulte from "../../Media/GeneralMedia/QuanVaulte.png";
+import Button from "../../Components/GeneralComponents/Button";
 
-interface FormErrors {
-  email?: string;
+interface passwordReset {
+  password: string;
 }
 
-const ForgotPasswordPage: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+interface FormErrors {
+  password?: string;
+  confirm_password?: string;
+}
 
-  // ✅ Validate the email format
-  const validateEmail = (): boolean => {
+function PasswordResetPage() {
+  const [passwordReset, setPasswordReset] = useState<passwordReset>({
+    password: "",
+  });
+
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errors, setErrors] = useState<FormErrors>({});
+  const passwordRegex =
+    /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#&<>])[A-Za-z\d@$!%*?&#&<>]{8,}$/;
+
+  const validateForm = () => {
     const newErrors: FormErrors = {};
 
-    if (!email.trim()) {
-      newErrors.email = "Email is required.";
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = "Please enter a valid email address.";
+    if (!passwordRegex.test(passwordReset.password)) {
+      newErrors.password =
+        "Password must have at least: 8 characters, 1 UPPERCASE, 1 number, and a special character (%@#$).";
+    }
+
+    if (confirmPassword !== passwordReset.password) {
+      newErrors.confirm_password = "Passwords do not match.";
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // ✅ Handle email submission
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setPasswordReset((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
+
+  const handleConfirmChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setConfirmPassword(value);
+
+    if (value && value !== passwordReset.password) {
+      setErrors((prev) => ({
+        ...prev,
+        confirm_password: "Passwords do not match.",
+      }));
+    } else {
+      setErrors((prev) => ({ ...prev, confirm_password: "" }));
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!validateEmail()) return;
-
-    try {
-      setLoading(true);
-      setMessage("Sending password reset link...");
-
-      // 🔹 Send request to backend
-      const response = await axios.post(
-        "http://localhost:5000/api/v2/auth/forgot-password",
-        { email }
-      );
-
-      // Example backend response:
-      // { message: "Token sent", token: "abc123" }
-      console.log("Reset token (for testing):", response.data.token);
-
-      setMessage(
-        " A password reset link has been sent to your email. Please check your inbox."
-      );
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        console.error("Password reset error:", err.response?.data);
-
-        const errorMsg =
-          err.response?.data?.msg ||
-          err.response?.data?.message ||
-          "Unable to send reset link. Please try again.";
-
-        setMessage(`${errorMsg}`);
-      } else {
-        console.error("Unexpected error:", err);
-        setMessage("An unexpected error occurred. Please try again.");
-      }
-    } finally {
-      setLoading(false);
+    if (validateForm()) {
+      console.log("Form submitted:", passwordReset);
+      setPasswordReset({ password: "" });
+      setConfirmPassword("");
+      setErrors({});
     }
   };
 
@@ -81,57 +81,49 @@ const ForgotPasswordPage: React.FC = () => {
           onSubmit={handleSubmit}
           className="w-full max-w-md space-y-6 min-h-screen flex flex-col justify-between"
         >
-          {/* HEADER */}
           <section className="flex flex-col w-full mt-10 mb-10 items-center max-w-md">
             <img src={QuanVaulte} alt="QuanVaulte logo" className="my-4" />
             <h2 className="lg:text-3xl md:text-3xl sm:text-2xl text-xl font-bold text-gray-800 text-center">
-              Reset Your Password
+              Reset your password
             </h2>
             <p className="text-gray-600 text-center mb-6 sm:text-sm">
-              Enter your registered email address to receive a reset link.
+              Reset your password and get back to learning
             </p>
 
-            {/* MESSAGE */}
-            {message && (
-              <p
-                className={`text-center text-sm ${
-                  message.startsWith("✅") ? "text-green-600" : "text-red-500"
-                }`}
-              >
-                {message}
-              </p>
-            )}
-
-            {/* EMAIL FIELD */}
             <InputField
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                setErrors({});
-              }}
-              error={errors.email}
+              type="password"
+              name="password"
+              placeholder="Enter new password"
+              value={passwordReset.password}
+              onChange={handleChange}
+              error={errors.password}
+            />
+
+            <InputField
+              type="password"
+              name="confirm_password"
+              placeholder="Confirm new password"
+              value={confirmPassword}
+              onChange={handleConfirmChange}
+              error={errors.confirm_password}
             />
           </section>
 
-          <section className="flex flex-col items-center space-y-4 mb-6">
+          <section>
             <Button
-              label={loading ? "Sending..." : "Send Reset Link"}
+              label="Reset password"
               type="submit"
               variant="primary"
-              disabled={loading}
-              className="w-full"
+              className="mt-15 mb-0 w-full sm:text-sm"
             />
 
             <p className="text-center text-gray-500 text-sm">
-              Remember your password?{" "}
+              Already have an account?{" "}
               <Link
                 to="/login"
-                className="text-blue-600 hover:underline cursor-pointer"
+                className="text-blue-600 mb-5 hover:underline cursor-pointer"
               >
-                Log in
+                Sign in
               </Link>
             </p>
           </section>
@@ -139,6 +131,6 @@ const ForgotPasswordPage: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
-export default ForgotPasswordPage;
+export default PasswordResetPage;

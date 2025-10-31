@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios, { AxiosError } from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Carousel from "../../Components/GeneralComponents/Carousel";
 import InputField from "../../Components/GeneralComponents/InputField";
 import QuanVaulte from "../../Media/GeneralMedia/QuanVaulte.png";
@@ -19,6 +19,7 @@ interface FormErrors {
 }
 
 function ForgotPassword() {
+  const navigate = useNavigate();
   const [forgotPassword, setForgotPassword] = useState<ForgotPasswordData>({
     email: "",
   });
@@ -60,9 +61,19 @@ function ForgotPassword() {
 
       console.log("📩 Forgot Password API Response:", response.data);
 
-      setMessage(response.data.message || "Password reset link sent!");
-      setMessageType("success");
-      setForgotPassword({ email: "" });
+      if (response.status || response.status === 201) {
+        setMessage(response.data.message || "Password reset link sent!");
+        setMessageType("success");
+        setTimeout(
+          () => navigate(`/verify-reset-email/${response.data}`),
+          1500
+        );
+
+        setForgotPassword({ email: "" });
+      } else {
+        setMessage("Request unsuccessful. Try again.");
+      }
+
       // if and else statement to navigate to the verify email page
     } catch (err) {
       const error = err as AxiosError<{ message?: string }>;
@@ -130,7 +141,7 @@ function ForgotPassword() {
             <p className="text-center text-gray-500 text-sm">
               Remember your password?{" "}
               <Link
-                to="/login"
+                to="/"
                 className="text-blue-600 mb-5 hover:underline cursor-pointer"
               >
                 Login
